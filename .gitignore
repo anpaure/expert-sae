@@ -1,10 +1,110 @@
-# Python-generated files
+# =====================
+# OS & Editor Files
+# =====================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.swn
+*.tmp
+*.bak
+*.log
+*.out
+*.err
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# =====================
+# Python & Environment
+# =====================
 __pycache__/
-*.py[oc]
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+venv/
+env/
+*.env
+*.env.*
+.envrc
+pip-wheel-metadata/
+*.egg-info/
+.eggs/
 build/
 dist/
-wheels/
-*.egg-info
+*.spec
 
-# Virtual environments
-.venv
+# =====================
+# ML / Training Outputs
+# =====================
+# Weights & Biases
+wandb/
+# TensorBoard
+runs/
+# Checkpoints / Saved Models
+checkpoints/
+sae_checkpoints*/
+*_chkpts/
+*_checkpoints/
+*_checkpoints_expert_router*/
+linear_probe_chkpts/
+# Tokenizer / Model Artifacts
+tokenizer_*/
+hf_cache/
+.cache/
+huggingface/
+# Autointerp / Feature Exports
+autointerp_exports*/
+feature_exports*/
+feature_exports_v2*/
+feature_exports_v3*/
+# Exported Dashboards / Logs
+expert-dashboard/.next/
+expert-dashboard/node_modules/
+expert-dashboard/out/
+expert-dashboard/dist/
+expert-dashboard/.turbo/
+expert_router_dashboard_react.jsx
+
+# =====================
+# Data / Temporary
+# =====================
+data/
+datasets/
+tmp/
+temp/
+logs/
+outputs/
+results/
+*.npy
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.bin
+*.h5
+*.tfevents.*
+
+# =====================
+# Project / Build Tools
+# =====================
+uv.lock
+poetry.lock
+package-lock.json
+yarn.lock
+npm-debug.log
+
+# =====================
+# Misc
+# =====================
+*.ipynb_checkpoints/
+*.coverage
+.coverage.*
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.pytype/
+.tox/
