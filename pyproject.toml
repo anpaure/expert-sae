@@ -1,0 +1,14 @@
+[project]
+name = "sae"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.12"
+dependencies = [
+    "huggingface-hub>=0.35.3",
+    "numpy>=2.3.3",
+    "tensorboard>=2.20.0",
+    "torch>=2.8.0",
+    "tqdm>=4.67.1",
+    "transformers>=4.57.0",
+    "wandb>=0.22.2",
+]
