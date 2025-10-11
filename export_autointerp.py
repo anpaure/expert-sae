@@ -75,11 +75,11 @@ def export_feature_for_autointerp(
 
         score = float(codes[0, feature_id].item())
 
-        if score > 0:  # Only keep non-zero activations
-            key = (prompt, gen)
-            samples_dict[key]["token_scores"].append({"token_idx": t_idx, "score": score})
-            samples_dict[key]["layer"] = layer
-            samples_dict[key]["generated_text"] = gen
+        # Collect ALL tokens (including zeros) to maintain correct token_idx mapping
+        key = (prompt, gen)
+        samples_dict[key]["token_scores"].append({"token_idx": t_idx, "score": score})
+        samples_dict[key]["layer"] = layer
+        samples_dict[key]["generated_text"] = gen
 
         seen += 1
         if seen >= samples:
@@ -93,6 +93,10 @@ def export_feature_for_autointerp(
 
         max_score = max(ts["score"] for ts in data["token_scores"])
 
+        # Skip samples with no non-zero activations
+        if max_score <= 0:
+            continue
+
         # Tokenize the generated text
         token_ids = tokenizer.encode(data["generated_text"], add_special_tokens=False)
         token_strings = [tokenizer.decode([tid]) for tid in token_ids]
@@ -104,6 +108,13 @@ def export_feature_for_autointerp(
             continue
 
         min_idx = min(token_indices)
+
+        # DEBUG: Print for first example only
+        if len(activations) == 0:
+            print(f"\nDEBUG export_autointerp:")
+            print(f"  len(token_strings) = {len(token_strings)}")
+            print(f"  min_idx = {min_idx}, max_idx = {max(token_indices)}")
+            print(f"  Number of token_scores = {len(data['token_scores'])}")
 
         # Find tokens with highest activations
         highlighted = []
@@ -121,8 +132,8 @@ def export_feature_for_autointerp(
         highlighted.sort(key=lambda x: -x["score"])
 
         activations.append({
-            "prompt": prompt[:500],
-            "generated_text": data["generated_text"][:500],
+            "prompt": prompt,
+            "generated_text": data["generated_text"],
             "max_activation": round(max_score, 4),
             "top_tokens": highlighted[:10],  # Top 10 tokens in this example
             "full_text": f"{prompt[:200]}... → {data['generated_text'][:300]}"

@@ -52,7 +52,7 @@ class Config:
     # Top-k schedule (used if gate_mode in {"topk","jumprelu_cap"})
     topk_start: int = 16
     topk_end: int = 8
-    topk_anneal_steps: int = 800
+    topk_anneal_steps: int = 1600
 
     # L1 on codes (still useful with JumpReLU to sharpen features)
     l1_coeff: float = 2e-3
@@ -79,7 +79,7 @@ class Config:
 
     # Optim / schedule
     batch_size: int = 4096
-    steps: int = 3_000
+    steps: int = 9_000
     lr: float = 5e-4
     grad_clip: float = 1.0
 
@@ -97,8 +97,8 @@ class Config:
     eval_every: int = 500
 
     # Dataset slicing
-    max_tokens: Optional[int] = 200_000
-    include_files: Optional[List[str]] = field(default_factory=lambda: ["gpqa_diamond.zip"])
+    max_tokens: Optional[int] = 600_000
+    include_files: Optional[List[str]] = field(default_factory=lambda: ["mmlu_dev.zip"])
 
     # JumpReLU init
     jumprelu_tau_init: float = 0.0        # initial threshold

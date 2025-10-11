@@ -11,7 +11,11 @@ import torch
 import torch.nn.functional as F
 from huggingface_hub import list_repo_files, hf_hub_download
 
-from sae import cfg, SAE  # import your cfg + SAE class
+# Try to import from sae_v3 first (MMLU), fallback to sae.py (GPQA)
+try:
+    from sae_v3 import cfg, SAE
+except ImportError:
+    from sae import cfg, SAE
 
 # -------------------------
 # Helpers

@@ -109,27 +109,39 @@ def export_feature_activations(
         # Create score map from token_idx to score
         score_map = {ts["token_idx"]: ts["score"] for ts in data["token_scores"]}
 
-        # Normalize token indices to start from min
+        # Get the actual range of token indices we have from the dataset
         token_indices = sorted(score_map.keys())
         if not token_indices:
             continue
 
         min_idx = min(token_indices)
+        max_idx = max(token_indices)
 
-        # Map token indices to token strings with scores
+        # DEBUG: Print for first example only
+        if len(activations) == 0:
+            print(f"\nDEBUG export_sae_features:")
+            print(f"  len(token_strings) = {len(token_strings)}")
+            print(f"  min_idx = {min_idx}, max_idx = {max_idx}")
+            print(f"  Number of token_scores = {len(data['token_scores'])}")
+
+        # The dataset token indices are offset from the start of generation
+        # They directly correspond to positions in the tokenized text
+        # So token_idx = min_idx corresponds to token_strings[0], etc.
         tokens_with_scores = []
         for i, tok_str in enumerate(token_strings):
-            # Map position i to actual token_idx
-            actual_idx = min_idx + i
-            score = score_map.get(actual_idx, 0.0)
+            # The dataset token_idx for this position
+            dataset_idx = min_idx + i
+            # Get the score for this token_idx (if it exists in our data)
+            score = score_map.get(dataset_idx, 0.0)
             tokens_with_scores.append({
                 "text": tok_str,
                 "score": score
             })
 
+        # Don't truncate - send full text to match tokens
         activations.append({
-            "prompt": prompt[:1000],
-            "generated": gen[:1000],
+            "prompt": prompt,
+            "generated": gen_text,
             "tokens": tokens_with_scores,
             "max_score": max_score,
             "layer": data["layer"]
